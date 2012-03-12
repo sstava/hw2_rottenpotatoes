@@ -7,7 +7,8 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+    params[:sort_title] == 'd' ? session[:sort_title] = 'a' : session[:sort_title] = 'd'
+    params[:sort_title] == 'a' ? @movies = Movie.all(:order => "title ASC") : @movies = Movie.all(:order => "title DESC")
   end
 
   def new
