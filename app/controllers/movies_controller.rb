@@ -7,16 +7,37 @@ class MoviesController < ApplicationController
   end
 
   def index
-    #params[:sort_title] == 'd' ? session[:sort_title] = 'a' : session[:sort_title] = 'd'
-    #params[:sort_title] == 'a' ? @movies = Movie.all(:order => "title ASC") : @movies = Movie.all
+    @rating_checked =
+    if !params[:ratings].nil?
+      @selected_ratings = []
+      @ratings = params[:ratings]
+      @ratings.each do |key, value|
+        @selected_ratings << key
+      end
+      @query_ratings = @selected_ratings
+    elsif !session[:ratings].nil?
+      @selected_ratings = []
+      @ratings = session[:ratings]
+      @ratings.each do |key, value|
+        @selected_ratings << key
+      end
+      @query_ratings = @selected_ratings
+    else
+      @query_ratings = Movie.all_ratings
+    end
 
     if params[:sort_title] == 'hilite'
-      @movies = Movie.all(:order => "title ASC")
+      @movies = Movie.where(:rating => @query_ratings, :order => "title ASC")
+      #@movies = Movie.all(:order => "title ASC")
     elsif params[:sort_date] == 'hilite'
-      @movies = Movie.all(:order => "release_date ASC")
+      @movies = Movie.where(:rating => @query_ratings, :order => "release_date ASC")
+      #@movies = Movie.all(:order => "release_date ASC")
     else
-      @movies = Movie.all
+      @movies = Movie.where(:rating => @query_ratings)
+      #@movies = Movie.all
     end
+
+    @all_ratings = Movie.all_ratings
 
   end
 
