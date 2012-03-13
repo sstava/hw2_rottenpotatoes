@@ -4,9 +4,11 @@
 %table#movies
   %thead
     %tr
-      %th= link_to 'Movie Title', movies_path(:sort_title => session[:sort_title])
+      %th{:class => params[:sort_title]}
+        %a#title_header{:href => '/movies?sort_title=hilite'} Movie Title
       %th Rating
-      %th Release Date
+      %th{:class => params[:sort_date]}
+        %a#release_date_header{:href => '/movies?sort_date=hilite'} Release Date
       %th More Info
   %tbody
     - @movies.each do |movie|

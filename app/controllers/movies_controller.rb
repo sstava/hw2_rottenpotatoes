@@ -7,8 +7,17 @@ class MoviesController < ApplicationController
   end
 
   def index
-    params[:sort_title] == 'd' ? session[:sort_title] = 'a' : session[:sort_title] = 'd'
-    params[:sort_title] == 'a' ? @movies = Movie.all(:order => "title ASC") : @movies = Movie.all(:order => "title DESC")
+    #params[:sort_title] == 'd' ? session[:sort_title] = 'a' : session[:sort_title] = 'd'
+    #params[:sort_title] == 'a' ? @movies = Movie.all(:order => "title ASC") : @movies = Movie.all
+
+    if params[:sort_title] == 'hilite'
+      @movies = Movie.all(:order => "title ASC")
+    elsif params[:sort_date] == 'hilite'
+      @movies = Movie.all(:order => "release_date ASC")
+    else
+      @movies = Movie.all
+    end
+
   end
 
   def new
