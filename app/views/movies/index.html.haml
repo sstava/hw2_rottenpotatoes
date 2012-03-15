@@ -5,16 +5,16 @@
   Include:
   - @all_ratings.each do |rating|
     = rating
-    = check_box_tag "ratings[#{rating}]", true
-  = submit_tag 'Refresh'
+    = check_box_tag "ratings[#{rating}]", 1, @rating_checked[rating]
+  = submit_tag 'Refresh', :id => "ratings_submit"
 
 %table#movies
   %thead
     %tr
-      %th{:class => params[:sort_title]}
+      %th{:class => session[:sort_title]}
         %a#title_header{:href => '/movies?sort_title=hilite'} Movie Title
       %th Rating
-      %th{:class => params[:sort_date]}
+      %th{:class => session[:sort_date]}
         %a#release_date_header{:href => '/movies?sort_date=hilite'} Release Date
       %th More Info
   %tbody
@@ -26,3 +26,16 @@
         %td= link_to "More about #{movie.title}", movie_path(movie)
 
 = link_to 'Add new movie', new_movie_path
+%h1 Extra Stuff
+- params.each do |key, value|
+  = key.to_s + "->" + value.to_s + "; "
+%p
+- session.each do |key, value|
+  = key.to_s + "->" + value.to_s + "; "
+%p
+= @selected_ratings.to_s
+%p
+= session[:ratings].to_s
+%p
+= @full_uri
+
